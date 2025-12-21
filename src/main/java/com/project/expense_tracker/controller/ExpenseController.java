@@ -1,8 +1,7 @@
 package com.project.expense_tracker.controller;
 
+import com.project.expense_tracker.DTO.ExpenseResponse;
 import com.project.expense_tracker.DTO.createExpenseRequest;
-import com.project.expense_tracker.entity.Expense;
-import com.project.expense_tracker.repository.ExpenseRepository;
 import com.project.expense_tracker.service.ExpenseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,22 +24,20 @@ import java.util.List;
 @RequestMapping("/api/expense")
 public class ExpenseController {
     private static final Logger log = LoggerFactory.getLogger(ExpenseController.class);
-    private final ExpenseRepository expenseRepository;
     private final ExpenseService expenseService;
 
-     ExpenseController(ExpenseRepository expenseRepository,  ExpenseService expenseService) {
-        this.expenseRepository = expenseRepository;
+     ExpenseController(ExpenseService expenseService) {
         this.expenseService = expenseService;
     }
 
     @GetMapping
-    public List<Expense> getAllExpenses(){
-        return expenseRepository.findAll();
+    public List<ExpenseResponse> getAllExpenses(){
+        return expenseService.findAllExpense();
     }
 
     @GetMapping("/{category}")
-    public List<Expense> getExpenseByCategory(@PathVariable String category){
-        var expenses =  expenseRepository.findByCategory(category);
+    public List<ExpenseResponse> getExpenseByCategory(@PathVariable String category){
+        var expenses =  expenseService.findExpenseByCategory(category);
         if (expenses.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Expense category not found");
         }

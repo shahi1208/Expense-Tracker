@@ -27,18 +27,18 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    UserController(UserRepository userRepository,  UserService userService) {
+    UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }
 
     @GetMapping
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     @GetMapping("/{username}")
-    public User getUser(@PathVariable String username){
+    public User getUser(@PathVariable String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "User not found with username: " + username));
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String username){
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
         userService.deleteUserByUsername(username);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
